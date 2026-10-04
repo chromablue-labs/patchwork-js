@@ -1,0 +1,67 @@
+{
+  "name": "@usepatchwork/react",
+  "version": "0.2.0",
+  "description": "Headless React SDK for embedding Patchwork agents",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "keywords": [
+    "patchwork",
+    "agent",
+    "ai",
+    "react",
+    "headless"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^20.14.5",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.0",
+    "@usepatchwork/audio": "file:../audio",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
+  },
+  "author": "Chromablue Labs",
+  "homepage": "https://docs.usepatchwork.co",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chromablue-labs/patchwork-js.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/chromablue-labs/patchwork-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@usepatchwork/client": "^0.1.0"
+  }
+}

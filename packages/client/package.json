@@ -1,0 +1,56 @@
+{
+  "name": "@usepatchwork/client",
+  "version": "0.1.0",
+  "description": "Framework-agnostic client for the Patchwork API \u2014 threads, runs, realtime and voice",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "keywords": [
+    "patchwork",
+    "agent",
+    "ai",
+    "client"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pusher-js": "^8.4.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
+  },
+  "author": "Chromablue Labs",
+  "homepage": "https://docs.usepatchwork.co",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chromablue-labs/patchwork-js.git",
+    "directory": "packages/client"
+  },
+  "bugs": {
+    "url": "https://github.com/chromablue-labs/patchwork-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

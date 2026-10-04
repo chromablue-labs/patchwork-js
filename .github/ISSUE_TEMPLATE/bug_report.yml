@@ -1,0 +1,54 @@
+name: Bug report
+description: Something a package does that it should not, or the reverse.
+labels: [bug]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - "@usepatchwork/client"
+        - "@usepatchwork/react"
+        - "@usepatchwork/audio"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Browser and version, or Node/Bun and version.
+    validations:
+      required: true
+  - type: input
+    id: react_version
+    attributes:
+      label: React version
+      description: Only for "@usepatchwork/react".
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+      description: Include the error message and a stack trace if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Code that reproduces it
+      description: Smallest version that fails. Redact API keys and session tokens.
+      render: typescript
+    validations:
+      required: true

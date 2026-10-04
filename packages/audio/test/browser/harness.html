@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>@usepatchwork/audio harness</title>
+<body>
+<!-- Tests that need a user gesture set window.gesture and click this. Playwright's
+     click is a trusted event, so the browser grants user activation exactly as it
+     would for a person. -->
+<button id="gesture">gesture</button>
+<script type="module">
+  import * as A from "/dist/index.js";
+  import * as VZ from "/dist/visualizers.js";
+  window.A = A;
+  window.VZ = VZ;
+
+  // `?scenario=locked` runs HERE, at load, from page-owned script, with no user
+  // activation. It is the only way to observe the locked path: Playwright's
+  // page.evaluate carries a user gesture, so an unlock() attempted from a test
+  // body is never a no-gesture attempt. The test waits for this to finish before
+  // it touches the page, then reads window.locked.
+  if (new URLSearchParams(location.search).get("scenario") === "locked") {
+    const E = A.createEngine();
+    window.E = E;
+    window.log = [];
+    window.errors = [];
+    E.on("state", (s) => window.log.push(`state:${s}`));
+    E.on("error", (e) => window.errors.push({ code: e.code, recoverable: e.recoverable, message: e.message }));
+    const activeBefore = navigator.userActivation?.hasBeenActive ?? null;
+    const stateAtBirth = E.state;
+    const attempt = await E.unlock().then(() => "resolved", (e) => e.code);
+    window.locked = {
+      activeBefore, stateAtBirth, attempt,
+      stateAfter: E.state,
+      activeAfter: navigator.userActivation?.hasBeenActive ?? null,
+    };
+  }
+  document.getElementById("gesture").addEventListener("click", () => {
+    const fn = window.gesture;
+    window.gestureResult = fn ? Promise.resolve().then(fn) : Promise.resolve();
+  });
+  window.ready = true;
+</script>
+</body>

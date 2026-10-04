@@ -1,0 +1,17 @@
+[data-theme="dark"] {
+  --color-surface-selected: color-mix(
+    in oklch,
+    var(--color-neutral-800) 50%,
+    transparent
+  );
+  --color-surface-hover: color-mix(
+    in oklch,
+    var(--color-neutral-800) 50%,
+    transparent
+  );
+  --color-border-subtle: var(--color-neutral-800);
+
+  [data-color="neutral"][data-variant="solid"] {
+    @apply bg-white text-neutral-950;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "patchwork-js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '@usepatchwork/audio' build && bun run --filter '@usepatchwork/client' build && bun run --filter '@usepatchwork/react' build",
+    "typecheck": "bun run --filter '*' typecheck",
+    "test": "bun run --filter '*' test",
+    "check": "bun run build && bun run typecheck && bun run test"
+  }
+}

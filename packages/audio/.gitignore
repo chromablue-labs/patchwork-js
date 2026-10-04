@@ -1,0 +1,8 @@
+node_modules
+dist
+*.tsbuildinfo
+
+# playwright
+test-results/
+playwright-report/
+test/browser/.fixtures/

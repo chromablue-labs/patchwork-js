@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  check:
+    name: Typecheck, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Build, typecheck and test
+        run: bun run check
+      - name: Every package packs
+        run: |
+          for p in audio client react; do
+            ( cd "packages/$p" && npm pack --dry-run ) || exit 1
+          done
+
+  browser:
+    name: Audio browser tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/audio
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: bun install --frozen-lockfile
+        working-directory: .
+      - name: Build
+        run: bun run build
+      - name: Install Chromium
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Browser tests
+        run: bun run test:browser
+      - name: Lab typecheck and build
+        run: bun run lab:check

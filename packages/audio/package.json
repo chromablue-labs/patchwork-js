@@ -1,0 +1,66 @@
+{
+  "name": "@usepatchwork/audio",
+  "version": "0.2.0",
+  "description": "Browser audio engine for voice UX \u2014 lifecycle, capture, playback, voice-activity sensing, visualisers",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./visualizers": {
+      "types": "./dist/visualizers.d.ts",
+      "import": "./dist/visualizers.js",
+      "require": "./dist/visualizers.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test test/unit",
+    "test:browser": "playwright test",
+    "test:all": "bun run test && bun run build && bun run test:browser",
+    "lab": "cd lab && bun install && bun run dev",
+    "lab:check": "cd lab && bun install && bun run typecheck && bun run build"
+  },
+  "keywords": [
+    "audio",
+    "voice",
+    "web-audio",
+    "vad",
+    "waveform",
+    "mediarecorder"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/bun": "^1.4.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
+  },
+  "author": "Chromablue Labs",
+  "homepage": "https://docs.usepatchwork.co",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chromablue-labs/patchwork-js.git",
+    "directory": "packages/audio"
+  },
+  "bugs": {
+    "url": "https://github.com/chromablue-labs/patchwork-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

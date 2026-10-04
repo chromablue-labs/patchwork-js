@@ -1,0 +1,72 @@
+/* The same stylesheet chain as web/src/index.css, so the lab is the same
+   building as the dashboard. Keep the order: tailwind → parrot theme,
+   styles, dark, theme-dark → our dark overrides → the same @theme block. */
+@import "tailwindcss";
+@import "@parrot-co/parrot-ui/theme.css";
+@import "@parrot-co/parrot-ui/styles.css";
+@import "@parrot-co/parrot-ui/dark.css";
+@import "@parrot-co/parrot-ui/theme-dark.css";
+@import "./dark.css";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --gradient-primary: linear-gradient(rgb(233, 247, 250) 0%, rgba(249, 249, 250, 0.5) 100%);
+  --gradient-secondary: linear-gradient(rgb(255, 231, 252) 50%, rgba(255, 255, 255, 0.5) 100%);
+  --text-sm: 14px;
+  --text-2xs: 12px;
+  --color-focus-border: var(--color-primary);
+}
+
+@layer theme {
+  :root {
+    --color-surface: var(--color-neutral-50);
+    --color-surface-hover: var(--color-neutral-100);
+    --color-surface-sunken: var(--color-neutral-100);
+    --color-text-muted: var(--color-neutral-400);
+    --color-text-light: var(--color-neutral-500);
+    --color-text-dark: var(--color-neutral-900);
+    --color-primary: var(--color-neutral-600);
+    --color-border-subtle: var(--color-neutral-100);
+  }
+}
+
+[data-color="neutral"][data-variant="solid"] {
+  @apply bg-neutral-800;
+}
+
+#root {
+  min-height: 100vh;
+  color: var(--color-text-dark);
+}
+
+.card {
+  @apply border-border-subtle shadow-neutral-100 rounded;
+}
+
+.prt-input-label {
+  @apply text-[13px];
+}
+
+.prt-input-description {
+  @apply text-2xs text-text-light leading-relaxed;
+}
+
+.prt-list-box-wrapper {
+  @apply shadow-2xs;
+}
+
+.divider {
+  @apply bg-border-subtle w-full h-px;
+}
+
+/* Lab-only: monospace readouts and the instrument grid. Built from parrot's tokens. */
+.readout {
+  @apply font-mono text-2xs text-text-light tabular-nums;
+}
+
+.readout-value {
+  @apply font-mono text-sm text-text-dark tabular-nums;
+}
