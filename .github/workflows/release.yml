@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags: [ "client-v*", "react-v*", "audio-v*" ]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package to stage"
+        required: true
+        type: choice
+        options: [ client, react, audio ]
+
+jobs:
+  check:
+    name: Build, typecheck, test, pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Check
+        run: bun run check
+      - name: Every package packs
+        run: |
+          for p in audio client react; do
+            ( cd "packages/$p" && npm pack --dry-run ) || exit 1
+          done
+
+  stage:
+    name: Stage on npm
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Which package, and at what version
+        id: target
+        run: |
+          if [ -n "${{ inputs.package }}" ]; then
+            name="${{ inputs.package }}"
+            tagged=""
+          else
+            name="${GITHUB_REF_NAME%%-v*}"
+            tagged="${GITHUB_REF_NAME#*-v}"
+          fi
+          case "$name" in
+            client|react|audio) ;;
+            *) echo "unrecognised package: $name"; exit 1 ;;
+          esac
+          actual=$(node -p "require('./packages/$name/package.json').version")
+          if [ -n "$tagged" ] && [ "$tagged" != "$actual" ]; then
+            echo "tag says $tagged but packages/$name/package.json says $actual"
+            exit 1
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$actual" >> "$GITHUB_OUTPUT"
+
+      - uses: oven-sh/setup-bun@v2
+      - name: Install and build
+        run: |
+          bun install --frozen-lockfile
+          bun run build
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: npm with OIDC and staging support
+        run: npm install -g npm@latest
+
+      - name: Stage
+        working-directory: packages/${{ steps.target.outputs.name }}
+        run: npm stage publish
+
+      - name: Where to approve it
+        run: |
+          echo "Staged @usepatchwork/${{ steps.target.outputs.name }}@${{ steps.target.outputs.version }}"
+          echo "Approve with 2FA: https://www.npmjs.com/package/@usepatchwork/${{ steps.target.outputs.name }}/staging"
+          echo "Or: npm stage approve @usepatchwork/${{ steps.target.outputs.name }}@${{ steps.target.outputs.version }}"
