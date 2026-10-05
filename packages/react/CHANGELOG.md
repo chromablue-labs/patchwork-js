@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- `exports` now includes `./package.json`. Tooling that reads a dependency's manifest directly could not, because the export map did not list it.
+
 ## 0.2.0
 
 First release. Headless React SDK for embedding Patchwork agents: auth, threads and resume, with the UI left to you.

@@ -1,6 +1,6 @@
 {
   "name": "@usepatchwork/client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Framework-agnostic client for the Patchwork API \u2014 threads, runs, realtime and voice",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -11,7 +11,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
