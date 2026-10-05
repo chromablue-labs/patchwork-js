@@ -34,7 +34,6 @@ jobs:
     name: Stage on npm
     needs: check
     runs-on: ubuntu-latest
-    environment: release
     permissions:
       id-token: write
       contents: read
@@ -85,7 +84,7 @@ jobs:
           echo "node $(node -v)  npm $(npm -v)"
           echo "ACTIONS_ID_TOKEN_REQUEST_URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}${ACTIONS_ID_TOKEN_REQUEST_URL:-no}"
           echo "registry: $(npm config get registry)"
-          echo "any authToken configured: $(npm config get //registry.npmjs.org/:_authToken)"
+          test -f ~/.npmrc && echo "npmrc present" || echo "no npmrc, as trusted publishing expects"
 
       - name: Stage
         working-directory: packages/${{ steps.target.outputs.name }}
