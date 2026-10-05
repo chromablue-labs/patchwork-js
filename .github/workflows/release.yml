@@ -34,6 +34,7 @@ jobs:
     name: Stage on npm
     needs: check
     runs-on: ubuntu-latest
+    environment: release
     permissions:
       id-token: write
       contents: read
@@ -79,9 +80,16 @@ jobs:
       - name: npm with OIDC and staging support
         run: npm install -g npm@latest
 
+      - name: What the runner has for OIDC
+        run: |
+          echo "node $(node -v)  npm $(npm -v)"
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}${ACTIONS_ID_TOKEN_REQUEST_URL:-no}"
+          echo "registry: $(npm config get registry)"
+          echo "any authToken configured: $(npm config get //registry.npmjs.org/:_authToken)"
+
       - name: Stage
         working-directory: packages/${{ steps.target.outputs.name }}
-        run: npm stage publish
+        run: npm stage publish --loglevel verbose
 
       - name: Where to approve it
         run: |
