@@ -90,8 +90,12 @@ jobs:
         working-directory: packages/${{ steps.target.outputs.name }}
         run: npm stage publish --loglevel verbose
 
-      - name: Where to approve it
+      - name: How to approve it
         run: |
-          echo "Staged @usepatchwork/${{ steps.target.outputs.name }}@${{ steps.target.outputs.version }}"
-          echo "Approve with 2FA: https://www.npmjs.com/package/@usepatchwork/${{ steps.target.outputs.name }}/staging"
-          echo "Or: npm stage approve @usepatchwork/${{ steps.target.outputs.name }}@${{ steps.target.outputs.version }}"
+          echo "Staged @usepatchwork/${{ steps.target.outputs.name }}@${{ steps.target.outputs.version }}."
+          echo "It is not public until a maintainer approves it with 2FA."
+          echo
+          echo "On the web: the Staged Packages tab on npmjs.com."
+          echo "On the CLI:"
+          echo "  npm stage list"
+          echo "  npm stage approve <stage-id>   # approve takes the id, not the package spec"
