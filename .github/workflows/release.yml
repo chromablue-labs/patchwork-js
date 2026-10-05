@@ -18,6 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.2"
       - name: Install
         run: bun install --frozen-lockfile
       - name: Check
@@ -63,6 +65,8 @@ jobs:
           echo "version=$actual" >> "$GITHUB_OUTPUT"
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.2"
       - name: Install and build
         run: |
           bun install --frozen-lockfile
